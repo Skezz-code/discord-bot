@@ -102,7 +102,7 @@ async def audit(ctx, member: discord.Member, role: discord.Role, duration: str, 
     await member.add_roles(role)
 
     # время окончания (ИСПРАВЛЕНО)
-    if seconds is None:
+if seconds is None:
     expires = "Навсегда"
 else:
     expires = format_seconds(seconds)
