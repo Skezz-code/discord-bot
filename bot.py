@@ -90,22 +90,29 @@ async def auto_remove_role(member, role, seconds, log_channel):
 @bot.command(name="audit")
 async def audit(ctx, member: discord.Member, role: discord.Role, duration: str, *, reason: str):
 
-    await ctx.message.delete()
+    # 🔥 удаляем сообщение с командой
+    try:
+        await ctx.message.delete()
+    except:
+        pass  # если нет прав — бот не упадёт
 
     seconds = parse_duration_to_seconds(duration)
 
+    # выдача роли
     try:
         await member.add_roles(role)
     except Exception as e:
         await ctx.send(f"❌ Ошибка выдачи роли: {e}")
         return
 
+    # время окончания
     if seconds:
         end_time = datetime.utcnow() + timedelta(seconds=seconds)
         expires = end_time.strftime("%Y-%m-%d %H:%M UTC")
     else:
         expires = "Навсегда"
 
+    # embed
     embed = discord.Embed(
         title="📋 КАДРОВЫЙ АУДИТ",
         color=discord.Color.blue()
@@ -119,6 +126,7 @@ async def audit(ctx, member: discord.Member, role: discord.Role, duration: str, 
 
     await ctx.send(embed=embed)
 
+    # авто-снятие роли
     if seconds:
         log_channel = ctx.channel
         asyncio.create_task(auto_remove_role(member, role, seconds, log_channel))
