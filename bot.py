@@ -90,6 +90,8 @@ async def auto_remove_role(member, role, seconds, log_channel):
 @bot.command(name="audit")
 async def audit(ctx, member: discord.Member, role: discord.Role, duration: str, *, reason: str):
 
+    await ctx.message.delete()
+
     seconds = parse_duration_to_seconds(duration)
 
     try:
