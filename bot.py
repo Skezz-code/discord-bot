@@ -102,11 +102,11 @@ async def audit(ctx, member: discord.Member, role: discord.Role, duration: str, 
     await member.add_roles(role)
 
     # время окончания (ИСПРАВЛЕНО)
-    if seconds:
-        end_time = datetime.utcnow() + timedelta(seconds=seconds)
-        expires = format_seconds(seconds)
-    else:
-        expires = "Навсегда"
+    if seconds is None:
+    expires = "Навсегда"
+else:
+    end_time = datetime.utcnow() + timedelta(seconds=seconds)
+    expires = format_seconds(seconds)
 
     # embed (1 сообщение)
     embed = discord.Embed(
@@ -116,7 +116,7 @@ async def audit(ctx, member: discord.Member, role: discord.Role, duration: str, 
 
     embed.add_field(name="👤 Сотрудник", value=member.mention, inline=False)
     embed.add_field(name="⬆️ Должность", value=role.mention, inline=False)
-    embed.add_field(name="⏳ Срок", value=format_seconds(seconds), inline=False)
+    embed.add_field(name="⏳ Срок", value=expires, inline=False)
     embed.add_field(name="🕒 Истекает", value=expires, inline=False)
     embed.add_field(name="📝 Причина", value=reason, inline=False)
 
