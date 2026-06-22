@@ -105,7 +105,6 @@ async def audit(ctx, member: discord.Member, role: discord.Role, duration: str, 
     if seconds is None:
     expires = "Навсегда"
 else:
-    end_time = datetime.utcnow() + timedelta(seconds=seconds)
     expires = format_seconds(seconds)
 
     # embed (1 сообщение)
