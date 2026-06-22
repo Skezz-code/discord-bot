@@ -101,13 +101,13 @@ async def audit(ctx, member: discord.Member, role: discord.Role, duration: str, 
     # выдача роли
     await member.add_roles(role)
 
-    # время окончания (ИСПРАВЛЕНО)
-if seconds is None:
-    expires = "Навсегда"
-else:
-    expires = format_seconds(seconds)
+    # время окончания
+    if seconds is None:
+        expires = "Навсегда"
+    else:
+        expires = format_seconds(seconds)
 
-    # embed (1 сообщение)
+    # embed
     embed = discord.Embed(
         title="📋 КАДРОВЫЙ АУДИТ",
         color=discord.Color.blue()
@@ -116,10 +116,13 @@ else:
     embed.add_field(name="👤 Сотрудник", value=member.mention, inline=False)
     embed.add_field(name="⬆️ Должность", value=role.mention, inline=False)
     embed.add_field(name="⏳ Срок", value=expires, inline=False)
-    embed.add_field(name="🕒 Истекает", value=expires, inline=False)
     embed.add_field(name="📝 Причина", value=reason, inline=False)
 
     await ctx.send(embed=embed)
+
+    # авто-снятие роли
+    if seconds:
+        asyncio.create_task(auto_remove_role(member, role, seconds, ctx.channel))
 
     # авто-снятие роли
     if seconds:
