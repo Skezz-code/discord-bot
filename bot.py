@@ -125,4 +125,4 @@ async def audit(ctx, member: discord.Member, role: discord.Role, duration: str, 
 # =========================
 # RUN (RAILWAY READY)
 # =========================
-bot.run(os.getenv("token"))
+bot.run(os.getenv("DISCORD_TOKEN"))
